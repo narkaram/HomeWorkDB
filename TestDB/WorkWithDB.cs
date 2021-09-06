@@ -56,8 +56,6 @@ namespace TestDB
                     var sql = @"
                     CREATE SEQUENCE announcement_id_seq;
 
-                    select exists (select * from information_schema.tables where table_name = 'table_name' and table_schema = 'public')
-
                     CREATE TABLE announcement
                     (
                         id              BIGINT                      NOT NULL    DEFAULT NEXTVAL('announcement_id_seq'),
@@ -200,45 +198,65 @@ namespace TestDB
             {
                 connection.Open();
                 var sql = query;
-                NpgsqlCommand command = connection.CreateCommand();
-                command.CommandText = sql;
-                NpgsqlDataReader reader = command.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    int countColumn = reader.FieldCount;
-                    for (int i = 0; i < countColumn; i++)
-                        headers.Add(reader.GetName(i));
-                    while (reader.Read())
+                using (var command = connection.CreateCommand()) 
+                { 
+                    command.CommandText = sql;
+                    using (var reader = command.ExecuteReader())
                     {
-                        List<string> tmp = new List<string>();
-                        for (int i = 0; i < countColumn; i++)
+                        if (reader.HasRows)
                         {
-                            string tmpValue = reader.GetValue(i).ToString();
-                            tmp.Add(tmpValue);
+                            int countColumn = reader.FieldCount;
+                            for (int i = 0; i < countColumn; i++)
+                                headers.Add(reader.GetName(i));
+                            while (reader.Read())
+                            {
+                                List<string> tmp = new List<string>();
+                                for (int i = 0; i < countColumn; i++)
+                                {
+                                    string tmpValue = reader.GetValue(i).ToString();
+                                    tmp.Add(tmpValue);
+                                }
+                                datas.Add(tmp);
+                            }
                         }
-                        datas.Add(tmp);
                     }
                 }
-                reader.Close();
-                command.Dispose();
             }
             return (headers, datas);
+        }
+
+        public static void InsertData(string query, Dictionary<string,string> fields)
+        {
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                var sql = query;
+                using (var command = connection.CreateCommand())
+                {
+                    foreach (KeyValuePair<string, string> kvp in fields)
+                        command.Parameters.AddWithValue(kvp.Key, kvp.Value);
+                    command.CommandText = sql;
+                    command.ExecuteNonQuery();
+                }
+            }
         }
 
         private static bool tableIsExest(NpgsqlConnection connection, string nameTable)
         {
             var sqlCheck = "select exists(select * from information_schema.tables where table_name = '"+ nameTable + "' and table_schema = 'public')";
-            NpgsqlCommand command = connection.CreateCommand();
-            command.CommandText = sqlCheck;
-            NpgsqlDataReader reader = command.ExecuteReader();
             bool existTable = false;
-            if (reader.HasRows)
+            using (var command = connection.CreateCommand()) 
             {
-                if(reader.Read())
-                    existTable = bool.Parse(reader.GetValue(0).ToString());
+                command.CommandText = sqlCheck;
+                using (var reader = command.ExecuteReader()) 
+                {                    
+                    if (reader.HasRows)
+                    {
+                        if (reader.Read())
+                            existTable = bool.Parse(reader.GetValue(0).ToString());
+                    }
+                }
             }
-            reader.Close();
-            command.Dispose();
             return existTable;
         }
     }

@@ -8,6 +8,7 @@ namespace TestDB
 {
     class Program
     {
+        const string separator = " | ";
         static void Main(string[] args)
         {
 
@@ -17,14 +18,14 @@ namespace TestDB
 
             WorkWithDB.InsertData();
 
-            var users = WorkWithDB.GetData("select * from users");
-            WriteText("Users", users.Item1, users.Item2);
+            var (users_headers, users_values) = WorkWithDB.GetData("select * from users");
+            WriteText("Users", users_headers, users_values);
 
-            var categories = WorkWithDB.GetData("select * from categories");
-            WriteText("Categories", categories.Item1, categories.Item2);
+            var (categories_headers, categories_values) = WorkWithDB.GetData("select * from categories");
+            WriteText("Categories", categories_headers, categories_values);
 
-            var announcement = WorkWithDB.GetData("select * from announcement");
-            WriteText("Announcement", announcement.Item1, announcement.Item2);
+            var (announcement_headers, announcement_values) = WorkWithDB.GetData("select * from announcement");
+            WriteText("Announcement", announcement_headers, announcement_values);
 
             if (Console.ReadLine().ToLower() == "insert")
             {
@@ -33,21 +34,27 @@ namespace TestDB
                 switch (table)
                 {
                     case "users":
+                        var users_var = new Dictionary<string, string>();
                         Console.WriteLine("Введите логин пользователя");
                         string username = Console.ReadLine();
+                        users_var.Add("@username", username);
                         Console.WriteLine("Введите имя пользователя");
                         string first_name = Console.ReadLine();
+                        users_var.Add("@first_name", first_name);
                         Console.WriteLine("Введите фамилию пользователя");
                         string last_name = Console.ReadLine();
+                        users_var.Add("@last_name", last_name);
                         Console.WriteLine("Введите электронный адрес пользователя");
                         string email = Console.ReadLine();
+                        users_var.Add("@email", email);
                         Console.WriteLine("Введите телефон пользователя");
                         string phone = Console.ReadLine();
-                        WorkWithDB.GetData("INSERT INTO USERS(username, first_name, last_name, email, phone) VALUES('" + username + "', '" + first_name + "', '" + last_name + "', '" + email + "', '" + phone + "')");
+                        users_var.Add("@phone", phone);
 
+                        WorkWithDB.InsertData("INSERT INTO USERS(username, first_name, last_name, email, phone) VALUES(@username, @first_name, @last_name, @email, @phone)", users_var);
                         Console.WriteLine("Пользователь успешно добавлен!");
-                        var users1 = WorkWithDB.GetData("select * from users");
-                        WriteText("Users", users1.Item1, users1.Item2);
+                        var (users_head, users_value) = WorkWithDB.GetData("select * from users");
+                        WriteText("Users", users_head, users_value);
 
                         break;
                     case "categories":
@@ -57,16 +64,18 @@ namespace TestDB
                         string sub_cat = Console.ReadLine().ToLower();
                         bool err = false;
                         if (sub_cat == "y")
-                            WorkWithDB.GetData("INSERT INTO CATEGORIES(NAME) VALUES('" + name_cat + "')");
+                        {
+                            WorkWithDB.InsertData("INSERT INTO CATEGORIES(NAME) VALUES(@name_cat)", new Dictionary<string, string> { { "@name_cat", name_cat } });
+                        }
                         else
                         {
                             Console.WriteLine("Введите название категории, к которой относится добавляемая категория");
                             string sub_cat_name = Console.ReadLine().ToLower();
-                            var data_cat = WorkWithDB.GetData("select id from CATEGORIES where name like '" + sub_cat_name + "')");
+                            var (data_cat_header, data_cat) = WorkWithDB.GetData("select id from CATEGORIES where name = '" + sub_cat_name + "')");
                             try
                             {
-                                string id = data_cat.Item2[0][0];
-                                WorkWithDB.GetData("INSERT INTO CATEGORIES(NAME, Main_category) VALUES('" + name_cat + "', " + id + ")");
+                                string id = data_cat[0][0];
+                                WorkWithDB.InsertData("INSERT INTO CATEGORIES(NAME, Main_category) VALUES(@name_cat, @id)", new Dictionary<string, string> { { "@name_cat", name_cat }, { "@id", id } });
                             }
                             catch
                             {
@@ -77,20 +86,23 @@ namespace TestDB
                         if (!err)
                         {
                             Console.WriteLine("Категория успешно добавлена!");
-                            var categories1 = WorkWithDB.GetData("select * from CATEGORIES");
-                            WriteText("Users", categories1.Item1, categories1.Item2);
+                            var (cat_head, cat_value) = WorkWithDB.GetData("select * from CATEGORIES");
+                            WriteText("Categories", cat_head, cat_value);
                         }
                         break;
                     case "announcement":
+                        var announcement_var = new Dictionary<string, string>();
                         bool errAnn = false;
                         Console.WriteLine("Введите заголовок объявления");
                         string caption = Console.ReadLine();
+                        announcement_var.Add("@caption", caption);
                         Console.WriteLine("Введите название категории пользователя");
                         string category_id = Console.ReadLine().ToLower();
-                        var data = WorkWithDB.GetData("select id from CATEGORIES where name like '" + category_id + "')");
+                        var (cat_res_head, cat_res) = WorkWithDB.GetData("select id from CATEGORIES where name like '" + category_id + "')");
                         try
                         {
-                            category_id = data.Item2[0][0];
+                            category_id = cat_res[0][0];
+                            announcement_var.Add("@category_id", category_id);
                         }
                         catch
                         {
@@ -101,10 +113,11 @@ namespace TestDB
                         {
                             Console.WriteLine("Введите логин пользователя");
                             string user_id = Console.ReadLine();
-                            var data2 = WorkWithDB.GetData("select id from users where name like '" + user_id + "')");
+                            var (user_res_head, user_res) = WorkWithDB.GetData("select id from users where name like '" + user_id + "')");
                             try
                             {
-                                user_id = data2.Item2[0][0];
+                                user_id = user_res[0][0];
+                                announcement_var.Add("@user_id", user_id);
                             }
                             catch
                             {
@@ -115,15 +128,18 @@ namespace TestDB
                             {
                                 Console.WriteLine("Введите адрес");
                                 string address = Console.ReadLine();
+                                announcement_var.Add("@address", address);
                                 Console.WriteLine("Введите цену товара");
                                 string price = Console.ReadLine();
+                                announcement_var.Add("@price", price);
                                 Console.WriteLine("Введите описание объявления");
                                 string description = Console.ReadLine();
-                                WorkWithDB.GetData(@"INSERT (caption, category_id, address, price, create_date, user_id, description)
-                                                     VALUES('" + caption + "', " + category_id + ", '" + address + "', '" + price.Replace(" ", "") + "', current_timestamp, " + user_id + ", '" + description + "')");
+                                announcement_var.Add("@description", description);
+
+                                WorkWithDB.InsertData("INSERT INTO USERS(username, first_name, last_name, email, phone) VALUES(@caption, @category_id, @address, @price, @current_timestamp, @user_id, @description)", announcement_var);
                                 Console.WriteLine("Объявление успешно добавлено!");
-                                var announcement1 = WorkWithDB.GetData("select * from users");
-                                WriteText("Announcement", announcement1.Item1, announcement1.Item2);
+                                var (announcement_head, announcement_value) = WorkWithDB.GetData("select * from announcement");
+                                WriteText("Announcement", announcement_head, announcement_value);
                             }
                         }
 
@@ -142,7 +158,7 @@ namespace TestDB
             string header = "";
             for (int i = 0; i < headers.Count; i++)
             {
-                header += headers[i] + " | ";
+                header += headers[i] + separator;
             }
             header.TrimEnd('|');
             Console.WriteLine(header);
@@ -152,7 +168,7 @@ namespace TestDB
                 row = "";
                 for (int j = 0; j < data[i].Count; j++)
                 {
-                    row += data[i][j] + " | ";
+                    row += data[i][j] + separator;
                 }
                 Console.WriteLine(row);
             }
