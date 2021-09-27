@@ -118,9 +118,9 @@ D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\TestDB\bin\Debug\S
 D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\TestDB\bin\Debug\System.Threading.Channels.xml
 D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\TestDB\bin\Debug\System.Threading.Tasks.Extensions.xml
 D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\TestDB\bin\Debug\System.ValueTuple.xml
-D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\TestDB\obj\Debug\TestDB.csprojAssemblyReference.cache
 D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\TestDB\obj\Debug\TestDB.exe.config
 D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\TestDB\obj\Debug\TestDB.csproj.CoreCompileInputs.cache
 D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\TestDB\obj\Debug\TestDB.csproj.CopyComplete
 D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\TestDB\obj\Debug\TestDB.exe
 D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\TestDB\obj\Debug\TestDB.pdb
+D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\TestDB\obj\Debug\TestDB.csproj.AssemblyReference.cache

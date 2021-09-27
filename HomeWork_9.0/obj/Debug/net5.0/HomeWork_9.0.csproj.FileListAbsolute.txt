@@ -1,0 +1,16 @@
+D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\HomeWork_9.0\bin\Debug\net5.0\HomeWork_9.0.exe
+D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\HomeWork_9.0\bin\Debug\net5.0\HomeWork_9.0.deps.json
+D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\HomeWork_9.0\bin\Debug\net5.0\HomeWork_9.0.runtimeconfig.json
+D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\HomeWork_9.0\bin\Debug\net5.0\HomeWork_9.0.runtimeconfig.dev.json
+D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\HomeWork_9.0\bin\Debug\net5.0\HomeWork_9.0.dll
+D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\HomeWork_9.0\bin\Debug\net5.0\ref\HomeWork_9.0.dll
+D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\HomeWork_9.0\bin\Debug\net5.0\HomeWork_9.0.pdb
+D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\HomeWork_9.0\obj\Debug\net5.0\HomeWork_9.0.csproj.AssemblyReference.cache
+D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\HomeWork_9.0\obj\Debug\net5.0\HomeWork_9.0.GeneratedMSBuildEditorConfig.editorconfig
+D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\HomeWork_9.0\obj\Debug\net5.0\HomeWork_9.0.AssemblyInfoInputs.cache
+D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\HomeWork_9.0\obj\Debug\net5.0\HomeWork_9.0.AssemblyInfo.cs
+D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\HomeWork_9.0\obj\Debug\net5.0\HomeWork_9.0.csproj.CoreCompileInputs.cache
+D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\HomeWork_9.0\obj\Debug\net5.0\HomeWork_9.0.dll
+D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\HomeWork_9.0\obj\Debug\net5.0\ref\HomeWork_9.0.dll
+D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\HomeWork_9.0\obj\Debug\net5.0\HomeWork_9.0.pdb
+D:\Рабочий стол\C# Proffessional\WorkWithDB\TestDB\HomeWork_9.0\obj\Debug\net5.0\HomeWork_9.0.genruntimeconfig.cache
