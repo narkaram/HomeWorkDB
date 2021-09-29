@@ -53,9 +53,21 @@ namespace HomeWork_Delegates
     {
         public static T GetMax<T>(this IEnumerable<T> e, Func<T, float> getParameter)
         {
-            var digits = e.Select(getParameter);
-            var max = digits.Max();
-            var res = e.First(item => getParameter(item) == max);
+            float max = -10000;
+            var list = e.ToList();
+            T res = default(T);
+            for(int i=0; i< list.Count; i++)
+            {
+                var value = getParameter(list[i]);
+                if(value > max)
+                {
+                    max = value;
+                    res = list[i];
+                }
+                    
+            }
+            //var digits = e.Select(getParameter);
+            //var max = digits.ToList().FindIndex(item => item == digits.Max());
             return res;
         }
     }
