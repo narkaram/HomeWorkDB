@@ -11,12 +11,12 @@ namespace HomeWork_Delegates
         static void Main(string[] args)
         {
             //////1
-            Test1[] mas = { new Test1(1), new Test1(2), new Test1(15), new Test1(3), new Test1(4), new Test1(5) };
+            Test1[] mas = { new Test1(float.MinValue), new Test1(float.MinValue) , new Test1(float.MinValue) };
             var b = ExtensionClass.GetMax<Test1>(mas, toFloat);
-            Console.WriteLine("Максимальное число - " + b.a.ToString());
+            Console.WriteLine("Максимальное число - " + b?.a.ToString());
             Console.WriteLine("");
             //////2
-            FileWatcher fileWatcher = new(@"D:\Рабочий стол\ДЗ"); 
+            FileWatcher fileWatcher = new(@"D:\Рабочий стол\ДЗ");
             fileWatcher.FileFound += onFileFound;
             fileWatcher.Search("");
         }
@@ -38,12 +38,12 @@ namespace HomeWork_Delegates
     #region первое задание
     class Test1
     {
-        public int a { get; set; }
+        public float a { get; set; }
         public Test1()
         {
             a = 15;
         }
-        public Test1(int _a)
+        public Test1(float _a)
         {
             a = _a;
         }
@@ -53,21 +53,23 @@ namespace HomeWork_Delegates
     {
         public static T GetMax<T>(this IEnumerable<T> e, Func<T, float> getParameter)
         {
-            float max = -10000;
             var list = e.ToList();
             T res = default(T);
-            for(int i=0; i< list.Count; i++)
+            float max = float.MinValue;
+            if (list.Count > 0)
+            {
+                max = getParameter(list[0]);
+                res = list[0];
+            }
+            for (int i=0; i< list.Count; i++)
             {
                 var value = getParameter(list[i]);
                 if(value > max)
                 {
                     max = value;
                     res = list[i];
-                }
-                    
+                }                    
             }
-            //var digits = e.Select(getParameter);
-            //var max = digits.ToList().FindIndex(item => item == digits.Max());
             return res;
         }
     }
